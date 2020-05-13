@@ -33,7 +33,6 @@ function getNewestBlock() {
         }
     })
 
-    console.log(_.maxBy(blocks, block => block.timestamp))
     return _.maxBy(blocks, block => block.timestamp)
 }
 
