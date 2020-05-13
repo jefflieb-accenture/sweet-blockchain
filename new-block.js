@@ -4,20 +4,21 @@ const fs = require('fs')
 const sha256 = require('./sha256')
 const blockFiles = require('./block-files')
 
-const data = process.argv[2]
-const timestamp = Date.now()
+module.exports = function addBlock(data) {
+    const timestamp = Date.now()
 
-const newBlock = {
-    data,
-    timestamp
+    const newBlock = {
+        data,
+        timestamp
+    }
+
+    const newestBlock = getNewestBlock()
+    if (newestBlock !== undefined) {
+        newBlock.previousHash = sha256(getNewestBlock().text)
+    }
+
+    writeBlock(newBlock)
 }
-
-const newestBlock = getNewestBlock()
-if (newestBlock !== undefined) {
-    newBlock.previousHash = sha256(getNewestBlock().text)
-}
-
-writeBlock(newBlock)
 
 function writeBlock(block) {
     const blockText = JSON.stringify(block)
